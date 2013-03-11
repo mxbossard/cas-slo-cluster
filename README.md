@@ -1,7 +1,9 @@
-cas-slo-cluster
+# cas-slo-cluster
 ===============
 
 CAS ServletFilter to replicate a Single LogOut (SLO) request in a clustered environment.
+
+## How it works
 
 The ServletFilter need to be configured with the list of URL each node of the cluster can be access.
 And with the hostname of the current node (to avoid sendind a request to himself).
@@ -9,10 +11,15 @@ And with the hostname of the current node (to avoid sendind a request to himself
 When a CAS SLO (sent in POST) is catch by the SLO Cluster Filter, the request is "forward" 
 to all other configured nodes in the cluster.
 
+The "forward" requests are sent asynchronously in POST to the same path the original one, 
+but using the host URL provided in peers configuration field.
+
+## Packaging
+
 The ServletFilter should be packaged as an external jar and embeded in the classpath 
 of the webapp (usually /WEB-INF/lib).
 
-Here is an example of configuration in the web.xml file :
+## Web.xml configuration example
 
 <filter>
   <filter-name>CAS SLO Cluster Filter</filter-name>
